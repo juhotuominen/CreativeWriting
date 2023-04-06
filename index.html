@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Writing</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body onload="showText()">
+    <div class="container">
+        <div class="top">
+            <div class="menubar">
+                <button class="menuButton" type="button">button1</button>
+                <button class="menuButton" type="button">button2</button>
+                <button class="menuButton" type="button">button3</button>
+            </div>
+        </div>
+        <div class="mid">
+            <div class="midContent">
+                <form>
+                    <textarea id="myTextarea"></textarea>
+                    <button type="button" onclick="saveText()">Save</button>
+                  </form>
+            </div>
+        </div>
+        <div class="bot">
+            <div class="userText" id="bottom"></div>
+        </div>
+    </div>     
+</body>
+</html>
