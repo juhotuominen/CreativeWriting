@@ -19,12 +19,15 @@ body {
 }
 .midContent{
     display: flex;
+    flex-direction: column;
     margin: 150px auto;
     background-color: #8a8a8a;
     min-height: 200px;
     width: 1000px;
 }
-
+#userText{
+    background-color: aliceblue;
+}
 p.text{
     margin-left: 30px;
     font-size: 24px;
