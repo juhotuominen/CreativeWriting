@@ -1,2 +1,2 @@
-# CreativeWriting  
-Website to write and read other users stories.
+# Full Stack Open
+Full Stack course by University of Helsinki
