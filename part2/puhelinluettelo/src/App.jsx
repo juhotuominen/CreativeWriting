@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'
+
+import './index.css'
 
 import FilterForm from './components/FilterForm';
 import AddPersonForm from './components/AddPersonForm';
@@ -12,6 +13,8 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
+  const [message, setMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personsService
@@ -42,6 +45,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson));
           setNewName('');
           setNewNumber('');
+          setMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 3000)
         })
     }
   };
@@ -53,15 +60,29 @@ const App = () => {
       .update(id, updatedPerson)
       .then(response => {
         setPersons(persons.map(person => person.id !== id ? person : response.data))
+        setMessage(`Updated ${updatedPerson.name}`)
+        setTimeout(() => {
+          setMessage(null)
+        },  3000)
       })
-  }
+      .catch(error => {
+        setErrorMessage(`Information of ${updatedPerson.name} has already been removed from server!`)
+        setTimeout(() => {
+        setErrorMessage(null)
+      }, 3000)
+      })
+  };
 
   const deletePerson = (id) => {
     if (window.confirm(`Delete person with ID ${id} ?`)){
       personsService
        .deletePerson(id)
+       setMessage(`Deleted person with id ${id}`)
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
     }
-  }
+  };
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -79,9 +100,33 @@ const App = () => {
     person.name.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+    return (
+      <div className="notification">
+        {message}
+      </div>
+    )
+  };
+
+  const ErrorNotification = ({ errorMessage }) => {
+    if (errorMessage === null) {
+      return null
+    }
+    return (
+      <div className="error">
+        {errorMessage}
+      </div>
+    )
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}></Notification>
+      <ErrorNotification errorMessage={errorMessage}></ErrorNotification>
       <FilterForm filter={filter} handleFilterChange={handleFilterChange} />
       <h2>Add a New</h2>
       <AddPersonForm
