@@ -5,6 +5,8 @@ import FilterForm from './components/FilterForm';
 import AddPersonForm from './components/AddPersonForm';
 import Persons from './components/Persons';
 
+import personsService from './services/persons'
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
@@ -12,10 +14,10 @@ const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personsService
+      .getAll()
+        .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -25,17 +27,41 @@ const App = () => {
       name: newName,
       number: newNumber,
       id: persons.length + 1,
-    };
+    }
 
     if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook.`);
+      const existingPerson = persons.find((person) => person.name === newName);
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        updatePerson(existingPerson.id);
+      }    
       return;
     } else {
-      setPersons(persons.concat(personObject));
-      setNewName('');
-      setNewNumber('');
+      personsService
+        .create(personObject)
+          .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewNumber('');
+        })
     }
   };
+
+  const updatePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+    const updatedPerson = { ...person, number: newNumber }
+    personsService
+      .update(id, updatedPerson)
+      .then(response => {
+        setPersons(persons.map(person => person.id !== id ? person : response.data))
+      })
+  }
+
+  const deletePerson = (id) => {
+    if (window.confirm(`Delete person with ID ${id} ?`)){
+      personsService
+       .deletePerson(id)
+    }
+  }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value);
@@ -66,7 +92,9 @@ const App = () => {
         addPerson={addPerson}
       />
       <h2>Numbers</h2>
-      <Persons filteredPersons={filteredPersons} />
+      <Persons 
+        filteredPersons={filteredPersons}
+        deletePerson={deletePerson}/>
     </div>
   );
 };
