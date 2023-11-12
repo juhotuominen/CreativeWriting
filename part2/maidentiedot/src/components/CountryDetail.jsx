@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
 import countryService from '../services/countries';
 
-const CountryDetail = (id) => {
-  const [country, setCountry] = useState({});
+const CountryDetail = ({ id }) => {
+  const [country, setCountry] = useState({})
+  const [weather, setWeather] = useState({})
 
   useEffect(() => {
-    countryService.getOne(id.id).then(initialCountry => {
-      setCountry(initialCountry);
-    });
-  }, [id.id]);
+    countryService.getOne(id).then(initialCountry => {
+      setCountry(initialCountry)
 
-  if (!country || Object.keys(country).length === 0) {
+      const cityName = initialCountry.capital
+      countryService.getWeather(cityName).then(initialWeather => {
+      setWeather(initialWeather)
+      console.log(initialWeather)
+      })
+    })
+  }, [id])
+
+  if (!country || Object.keys(country).length === 0 || Object.keys(weather).length === 0) {
     return <div>Loading...</div>;
   }
 
@@ -25,9 +32,19 @@ const CountryDetail = (id) => {
           <li key={index}>{language}</li>
         ))}
       </ul>
-      <img src={country.flags.png} alt="Country Flag" style={{maxHeight: 200, maxWidth: 200}} />
+      <img src={country.flags.png} alt="Country Flag" style={{ maxHeight: 200, maxWidth: 200 }} />
+      <h2>Weather in {country.name.common}</h2>
+      <p>temperatur: {weather.main.temp} Celsius</p>
+      <p>wind: {weather.wind.speed} m/s</p>
     </div>
-  );
-};
+  )
+}
 
-export default CountryDetail;
+export default CountryDetail
+
+
+
+
+
+
+
