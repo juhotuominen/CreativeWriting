@@ -8,7 +8,6 @@ const getAll = () => {
 const getOne = (id) => {
     console.log(`${baseUrl}/name/${id}`)
     const request = axios.get(`${baseUrl}/name/${id}`)
-    //console.log(request.then(response => response.data))
     return request.then(response => response.data)
     
 }
