@@ -4,15 +4,17 @@ import countryService from '../services/countries';
 const CountryDetail = ({ id }) => {
   const [country, setCountry] = useState({})
   const [weather, setWeather] = useState({})
+  
 
   useEffect(() => {
-    countryService.getOne(id).then(initialCountry => {
+    countryService
+      .getOne(id).then(initialCountry => {
       setCountry(initialCountry)
 
       const cityName = initialCountry.capital
-      countryService.getWeather(cityName).then(initialWeather => {
-      setWeather(initialWeather)
-      console.log(initialWeather)
+      countryService
+        .getWeather(cityName).then(initialWeather => {
+        setWeather(initialWeather)
       })
     })
   }, [id])
@@ -33,8 +35,9 @@ const CountryDetail = ({ id }) => {
         ))}
       </ul>
       <img src={country.flags.png} alt="Country Flag" style={{ maxHeight: 200, maxWidth: 200 }} />
-      <h2>Weather in {country.name.common}</h2>
-      <p>temperatur: {weather.main.temp} Celsius</p>
+      <h2>Weather in {country.capital}</h2>
+      <p>temperature: {weather.main.temp} Celsius</p>
+      <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="icon" />
       <p>wind: {weather.wind.speed} m/s</p>
     </div>
   )

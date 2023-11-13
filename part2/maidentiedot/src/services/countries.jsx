@@ -1,6 +1,7 @@
 import axios from 'axios'
 const baseUrl = 'https://studies.cs.helsinki.fi/restcountries/api'
 const weatherUrl = 'https://api.openweathermap.org/data/2.5/weather?q='
+const iconUrl = `https://openweathermap.org/img/wn/`
 const apiKey = import.meta.env.VITE_API_KEY;
 
 const getAll = () => {
@@ -8,7 +9,6 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 const getOne = (id) => {
-  console.log(`${baseUrl}/name/${id}`)
   const request = axios.get(`${baseUrl}/name/${id}`)
   return request.then(response => response.data)
 }
