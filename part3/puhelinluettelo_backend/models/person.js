@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
-require('dotenv').config();
+require('dotenv').config()
 
 mongoose.set('strictQuery',false)
 
 const url = process.env.MONGO_URL
-console.log("Connecting to MongoDB")
+console.log('Connecting to MongoDB')
 
 mongoose.connect(url)
     .then(result => {
-        console.log("Connected to MongoDB")
+        console.log('Connected to MongoDB')
     })
     .catch((error) => {
         console.log('error connecting to MongoDB', error.message)
@@ -40,5 +40,5 @@ personSchema.set('toJSON', {
         delete returnedObject.__v
     }
 })
-  
+
 module.exports = mongoose.model('Person', personSchema)

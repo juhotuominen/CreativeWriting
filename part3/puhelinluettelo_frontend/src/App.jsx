@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from 'react';
 
 import './index.css'
@@ -48,6 +49,13 @@ const App = () => {
           setTimeout(() => {
             setMessage(null)
           }, 3000)
+        })
+        .catch(error => {
+          console.log(error.response.data)
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 4000)
         })
     }
   };
