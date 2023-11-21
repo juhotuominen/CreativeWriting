@@ -160,6 +160,43 @@ describe('post method works', () => {
   })
 })
 
+describe('delete method works', () => {
+  test('delete request deletes blog with specified id', async () => {
+
+    const id = '5a422bc61b54a676234d17fc'
+    await api
+      .delete('/api/blogs/' + id)
+      .expect(204)
+    
+    const response = await api.get('/api/blogs')
+    const titles = response.body.map(r => r.title)
+
+    expect(titles).not.toContain("Type Wars")
+  })
+})
+
+describe('update method works', () => {
+  test('put request updates blog with specified id', async () => {
+
+    const id = '5a422a851b54a676234d17f7'
+    testBlog = {
+      title: "React Patternas",
+      author: "Michale Chan",
+      url: "https://reactpatterns.com/",
+      likes:  7
+    }
+    await api
+      .put('/api/blogs/' + id)
+      .send(testBlog)
+      .expect(200)
+    
+    const response = await api.get('/api/blogs')
+    const titles = response.body.map(r => r.title)
+
+    expect(titles).toContain("React Patternas")
+  })
+})
+
 
 afterAll(async () => {
   await mongoose.connection.close()
