@@ -104,6 +104,60 @@ describe('post method works', () => {
     expect(response.body).toHaveLength(initialBlogs.length + 1)
     expect(titles).toContain("posti testi")
   })
+
+  test('empty or undefined "like" value adjusts to 0', async () => {
+    testBlog = {
+      title: "Zero Likes Test",
+      author: "Tester Test",
+      url: "http://blog.com/ZeroTest.html",
+    }
+    testBlog2 = {
+      title: "Zero Likes Test",
+      author: "Tester Test",
+      url: "http://blog.com/ZeroTest.html",
+      likes: ''
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(testBlog)
+      .expect(201)
+
+    await api
+      .post('/api/blogs')
+      .send(testBlog2)
+      .expect(201)
+    const response = await api.get('/api/blogs')
+    const likes = response.body.map(r => r.likes)
+
+    expect(likes).not.toBeNull();
+    expect(likes).toBeDefined();
+
+  })
+
+  test('empty title or url results in status 400', async () => {
+    testBlog = {
+      title: "",
+      author: "Tester Test",
+      url: "http://blog.com/ZeroTest.html",
+      likes:  12
+    }
+    testBlog2 = {
+      title: "Test Blog",
+      author: "Tester Test",
+      url: "",
+      likes:  12
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(testBlog)
+      .expect(400)
+    await api
+      .post('/api/blogs')
+      .send(testBlog2)
+      .expect(400)
+  })
 })
 
 
