@@ -1,0 +1,11 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1aGlzIiwiaWQiOiI2NTY3OTFhNGYzN2E3ZjZhZTNkMjQ5MWEiLCJpYXQiOjE3MDEyODgzOTh9.bYTblzqxdlFXMITK05mslPD2HnaRp_T-UqjSSg8BOiA
+
+{
+    "title": "test title 123",
+    "author": "Juha-Matti",
+    "url": "https://test.com",
+    "likes": 13,
+    "user": "65677822dcdb8a57f12f8fc3"
+}
